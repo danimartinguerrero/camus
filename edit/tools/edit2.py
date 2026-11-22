@@ -269,32 +269,41 @@ def b_outro(fr, tl, D):
     typewriter(fr, TX['outro2'], tl, 1.4, 14, 'type', 34, 1390, (0.85, 0.80, 0.72), cursor=True, alpha=0.9)
     fr *= 1 - sm(prog(tl, D - 0.9, D))
 
-# (fn, beats, entry fx)
-SEQ = [
-    (b_hook, 5, None),
-    (make_flurry(['paris', 'cat', 'coat', 'smile']), 1, 'flash'),
-    (b_normal, 6, 'flash'),
-    (b_tired, 7, 'whip'),
-    (make_flurry(['lighting', 'cig', 'enavant', 'gesture']), 1, 'flash'),
-    (b_absurd, 4, 'flash'),
-    (b_refuse, 4, 'whip'),
-    (b_happy, 4, 'flash'),
-    (make_flurry(['cat', 'bed', 'sketch', 'cafe']), 1, 'flash'),
-    (b_despair, 5, 'flash'),
-    (b_autumn, 5, 'whip'),
-    (b_coffee, 5, 'flash'),
-    (b_tears, 3, 'flash'),
-    (b_world, 5, 'whip'),
-    (b_love, 4, 'flash'),
-    (make_flurry(['couch', 'facepalm', 'paris', 'smile']), 1, 'flash'),
-    (b_secret, 6, 'flash'),
-    (b_winter, 8, 'flash'),
-    (b_outro, 6, 'fade'),
-]
+T_PART1 = Text('to seek the unseen \u00b7 i', 'type', 30, 1010, color=(0.75, 0.70, 0.64), shadow=0.5)
+T_PART2 = Text('ii', 'type', 30, 1450, color=(0.75, 0.70, 0.64), shadow=0.5)
+T_END1 = T('hook2', 880, 74)
+def b_end1(fr, tl, D):
+    T_END1.draw(fr, tl, 0.25, per=0.1, fade=0.45, rise=10)
+    T_PART1.draw(fr, tl, 1.2, per=0.15, fade=0.5)
+    fr *= 1 - sm(prog(tl, D - 0.8, D))
+
+PART = os.environ.get('EDIT_PART', '1')
+# (fn, beats_in_this_cut, entry fx, original_beats) -> each block is time-stretched by orig/new (calmer pace)
+if PART == '1':
+    SEQ = [
+        (b_hook, 6, None, 5),
+        (make_flurry(['paris', 'cat', 'coat']), 3, 'flash', 3),
+        (b_normal, 7, 'flash', 6),
+        (b_tired, 8, 'whip', 7),
+        (b_absurd, 5, 'flash', 4),
+        (b_refuse, 5, 'whip', 4),
+        (b_happy, 6, 'flash', 4),
+        (b_end1, 4, 'fade', 4),
+    ]
+else:
+    SEQ = [
+        (b_despair, 6, None, 5),
+        (b_autumn, 6, 'whip', 5),
+        (b_coffee, 6, 'flash', 5),
+        (make_flurry(['bed', 'sketch', 'cafe']), 3, 'flash', 3),
+        (b_secret, 7, 'flash', 6),
+        (b_winter, 9, 'flash', 8),
+        (b_outro, 6, 'fade', 6),
+    ]
 TL = []
 _t = 0.0
-for fn, beats, fx in SEQ:
-    TL.append((fn, _t, beats * BEAT, fx)); _t += beats * BEAT
+for fn, beats, fx, ob in SEQ:
+    TL.append((fn, _t, beats * BEAT, fx, ob * BEAT)); _t += beats * BEAT
 DUR = _t
 NFRAMES = int(round(DUR * FPS))
 
@@ -304,14 +313,18 @@ def render_frame(fi):
     for b in TL:
         if b[1] <= t < b[1] + b[2]:
             blk = b; break
-    fn, st, D, fx = blk
+    fn, st, D, fx, Do = blk
     tl = t - st
+    ts = tl * Do / D  # stretched local time
     fr = blank()
-    fn(fr, tl, D)
+    fn(fr, ts, Do)
+    if fn is b_outro and PART == '2':
+        T_PART2.draw(fr, ts, 2.2, per=0.1, fade=0.5)
+        fr *= 1 - sm(prog(tl, D - 0.9, D))
     if fn is not b_secret:  # centre the composition a little lower (bottom is black)
         fr = np.roll(fr, 90, axis=0); fr[:90] = blank()[:90]
-    if fx == 'whip' and tl < 0.2:
-        e = eout(tl / 0.2)
+    if fx == 'whip' and tl < 0.3:
+        e = eout(tl / 0.3)
         acc = np.zeros_like(fr)
         for k in range(4):
             off = int((1 - e) * 520 + k * 22 * (1 - e))
@@ -319,13 +332,13 @@ def render_frame(fi):
         fr = acc / 4
         cut = int((1 - e) * 520)
         if cut > 0: fr[:cut] *= 0.0
-    elif fx == 'flash' and tl < 0.13:
-        k = (1 - tl / 0.13) ** 1.5
-        fr = fr * (1 - 0.85 * k) + np.asarray((1.0, 0.98, 0.95), F32) * 0.85 * k
+    elif fx == 'flash' and tl < 0.18:
+        k = (1 - tl / 0.18) ** 2
+        fr = fr * (1 - 0.6 * k) + np.asarray((1.0, 0.98, 0.95), F32) * 0.6 * k
     elif fx == 'fade' and tl < 0.3:
         fr *= sm(tl / 0.3)
-    if fn is b_hook and 1.75 <= tl < 1.95:  # accent shake on "seen"
-        a = int(10 * (1 - (tl - 1.75) / 0.2))
+    if fn is b_hook and 1.75 <= ts < 1.95:  # accent shake on "seen"
+        a = int(7 * (1 - (ts - 1.75) / 0.2))
         fr = np.roll(fr, (a if fi % 2 else -a), axis=1)
     return post(fr, fi, t, grain=0.04, vig=0.6, bl=0.15)
 
@@ -336,7 +349,7 @@ if __name__ == '__main__':
     cmd = sys.argv[1]
     if cmd == 'info':
         print('duration', DUR, 'frames', NFRAMES)
-        for fn, st, D, fx in TL:
+        for fn, st, D, fx, Do in TL:
             print(f'{st:6.2f} {D:4.1f} {fn.__name__}')
     elif cmd == 'preview':
         out = sys.argv[2]; os.makedirs(out, exist_ok=True)

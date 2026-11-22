@@ -1,6 +1,36 @@
 # to seek the unseen — edit de Albert Camus
 
-## v2 · versión corta y dinámica (recomendada)
+## Dos partes de ~20 s (recomendado)
+
+Mismo estilo que la v2, pero más pausado y dividido en dos edits. Cada bloque dura entre un 25 % y un 50 % más,
+las ráfagas son de un corte por pulso y los destellos son más suaves. Rejilla de 120 BPM (un pulso = 0,5 s).
+
+**Parte 1** · `camus_edit_parte1_es.mp4` / `_en` · 22 s
+| Tiempo | Frase |
+|---|---|
+| 0:00 | me miraban, pero no me veían |
+| 0:04.5 | nadie se da cuenta de que algunas personas gastan una energía tremenda solo para ser normales |
+| 0:08 | estoy extrañamente cansado… |
+| 0:12 | lo absurdo no libera; ata |
+| 0:14.5 | el hombre es la única criatura que se niega a ser lo que es |
+| 0:17 | hay que imaginarse a Sísifo feliz |
+| 0:20 | cierre: pero no me veían · to seek the unseen · i |
+
+**Parte 2** · `camus_edit_parte2_es.mp4` / `_en` · 21,5 s
+| Tiempo | Frase |
+|---|---|
+| 0:00 | no hay amor de vivir sin desesperación de vivir |
+| 0:03 | el otoño es una segunda primavera… |
+| 0:06 | la verdadera generosidad con el futuro… · damn fine coffee |
+| 0:10.5 | mosaico: …sus colores secretos… |
+| 0:14 | clímax: …un verano invencible |
+| 0:18.5 | nunca fuiste invisible · to seek the unseen · ii |
+
+Re-renderizar: `./tools/render2.sh es 1` (o `es 2`, `en 1`, `en 2`).
+
+---
+
+## v2 · versión corta y dinámica
 
 `camus_edit_v2_es.mp4` / `camus_edit_v2_en.mp4`: 40,5 s, 1080×1920, 30 fps, sin audio.
 Solo fotografías y frases (sin fondos decorativos), con clips pequeños sobre las fotos
