@@ -1,5 +1,37 @@
 # to seek the unseen — edit de Albert Camus
 
+## v2 · versión corta y dinámica (recomendada)
+
+`camus_edit_v2_es.mp4` / `camus_edit_v2_en.mp4`: 40,5 s, 1080×1920, 30 fps, sin audio.
+Solo fotografías y frases (sin fondos decorativos), con clips pequeños sobre las fotos
+(Camus hablando, el Nobel, ajedrez, café, lobo en la nieve). 15 frases.
+Montado sobre una rejilla de **120 BPM** (un corte cada 0,5 s): elige una canción a ~120 BPM
+(o a 60/240) y haz coincidir el primer golpe con el segundo 0.
+
+| Tiempo | Frase |
+|---|---|
+| 0:00 | me miraban, pero no me veían |
+| 0:03 | nadie se da cuenta de que algunas personas gastan una energía tremenda solo para ser normales |
+| 0:06 | estoy extrañamente cansado… |
+| 0:10 | lo absurdo no libera; ata |
+| 0:12 | el hombre es la única criatura que se niega a ser lo que es |
+| 0:14 | hay que imaginarse a Sísifo feliz |
+| 0:16.5 | no hay amor de vivir sin desesperación de vivir |
+| 0:19 | el otoño es una segunda primavera… |
+| 0:21.5 | la verdadera generosidad con el futuro… · damn fine coffee |
+| 0:24 | vivir hasta las lágrimas |
+| 0:25.5 | el mundo es bello, y fuera de él no hay salvación |
+| 0:28 | no conozco más que un deber, y es el de amar |
+| 0:30.5 | mosaico: …sus colores secretos… |
+| 0:33.5 | clímax: …un verano invencible |
+| 0:37.5 | nunca fuiste invisible · to seek the unseen |
+
+Re-renderizar: `./tools/render2.sh es` (tiempos en `SEQ` y frases en `TX` dentro de `tools/edit2.py`).
+
+---
+
+## v1 · versión larga
+
 Vertical 1080×1920 · 30 fps · 66 s · **sin audio** (para añadir tu canción).
 
 | Archivo | Contenido |
